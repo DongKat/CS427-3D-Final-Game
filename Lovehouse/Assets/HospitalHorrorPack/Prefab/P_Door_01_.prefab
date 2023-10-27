@@ -70,8 +70,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   intText: {fileID: 0}
+  key: {fileID: 0}
+  lockedText: {fileID: 0}
   interactable: 0
   toggle: 0
+  isOpen: 0
   doorAnim: {fileID: 0}
 --- !u!54 &-1090358819907291661
 Rigidbody:
