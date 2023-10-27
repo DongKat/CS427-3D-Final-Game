@@ -26,12 +26,15 @@ public class enemyAI : MonoBehaviour
     }
     void Update()
     {
-        Vector3 forwardDirection = transform.forward;
-
+        Vector3 forwardDirection = (player.transform.position - transform.position).normalized;
         // Check for obstacles within the vision range.
+
+        // To ensure that the raycast at the body of Player
+        Vector3 rayCastoffset = new Vector3(0, -1f, 0);
+
         RaycastHit hit;
-        Debug.DrawRay(rayCastOffset.position, forwardDirection * detectionDistance, Color.green);
-        if (Physics.Raycast(rayCastOffset.position, forwardDirection, out hit, detectionDistance))
+        Debug.DrawRay(rayCastOffset.position + rayCastoffset, forwardDirection * detectionDistance, Color.green);
+        if (Physics.Raycast(rayCastOffset.position + rayCastoffset, forwardDirection, out hit, detectionDistance))
         {
             // Check if the hit object is within the field of view angle.
             if (hit.collider.gameObject.tag == "Player")
