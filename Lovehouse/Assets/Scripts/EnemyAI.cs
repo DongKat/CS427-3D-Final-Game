@@ -9,12 +9,12 @@ public class enemyAI : MonoBehaviour
     public NavMeshAgent ai;
     public List<Transform> destinations;
     public Animator aiAnim;
-    public float walkSpeed, chaseSpeed, minIdleTime, maxIdleTime, idleTime, detectionDistance, catchDistance, searchDistance, minChaseTime, maxChaseTime, minSearchTime, maxSearchTime, jumpscareTime;
-    public bool walking, chasing, searching;
+    public float walkSpeed, chaseSpeed, minIdleTime, maxIdleTime, idleTime, detectionDistance, catchDistance, minChaseTime, maxChaseTime, minSearchTime, maxSearchTime, jumpscareTime;
+    public bool walking, chasing;
     public Transform player;
-    Transform currentDest;
-    Vector3 dest;
-    public Vector3 rayCastOffset;
+    public Transform currentDest;
+    public Transform dest;
+    public Transform rayCastOffset;
     public string deathScene;
     public float aiDistance;
     public GameObject hideText, stopHideText;
@@ -26,74 +26,79 @@ public class enemyAI : MonoBehaviour
     }
     void Update()
     {
-        Vector3 direction = (player.position - transform.position).normalized;
+        Vector3 forwardDirection = transform.forward;
+
+        // Check for obstacles within the vision range.
         RaycastHit hit;
-        aiDistance = Vector3.Distance(player.position, this.transform.position);
-        if(Physics.Raycast(transform.position + rayCastOffset, direction, out hit, detectionDistance))
+        Debug.DrawRay(rayCastOffset.position, forwardDirection * detectionDistance, Color.green);
+        if (Physics.Raycast(rayCastOffset.position, forwardDirection, out hit, detectionDistance))
         {
-            if(hit.collider.gameObject.tag == "Player")
+            // Check if the hit object is within the field of view angle.
+            if (hit.collider.gameObject.tag == "Player")
             {
+                Debug.Log("Hit object: " + hit.collider.gameObject.name);
                 walking = false;
+                chasing = true;
+
+                // Stop idling and give chase
                 StopCoroutine("stayIdle");
-                StopCoroutine("searchRoutine");
-                StartCoroutine("searchRoutine");
-                searching = true;
-            }
-        }
-        if(searching == true)
-        {
-            ai.speed = 0;
-            aiAnim.ResetTrigger("walk");
-            aiAnim.ResetTrigger("idle");
-            aiAnim.ResetTrigger("sprint");
-            aiAnim.SetTrigger("search");
-            if(aiDistance <= searchDistance)
-            {
-                StopCoroutine("stayIdle");
-                StopCoroutine("searchRoutine");
                 StopCoroutine("chaseRoutine");
                 StartCoroutine("chaseRoutine");
-                chasing = true;
-                searching = false;
             }
+
         }
-        if(chasing == true)
+
+
+        if (chasing == true)
         {
-            dest = player.position;
-            ai.destination = dest;
+            dest = player.transform;
+            ai.destination = dest.position;
+
+            // To full speed
             ai.speed = chaseSpeed;
+
+            // Reset all triggers
             aiAnim.ResetTrigger("walk");
             aiAnim.ResetTrigger("idle");
-            aiAnim.ResetTrigger("search");
+
             aiAnim.SetTrigger("sprint");
-            if (aiDistance <= catchDistance)
-            {
-                player.gameObject.SetActive(false);
-                aiAnim.ResetTrigger("walk");
-                aiAnim.ResetTrigger("idle");
-                aiAnim.ResetTrigger("search");
-                hideText.SetActive(false);
-                stopHideText.SetActive(false);
-                aiAnim.ResetTrigger("sprint");
-                aiAnim.SetTrigger("jumpscare");
-                StartCoroutine(deathRoutine());
-                chasing = false;
-            }
+
+            // If player get out of catch distance, stop chasing
+            // Else if player is in catch distance, kill player
+            // if (aiDistance <= catchDistance)
+            // {
+            //     // Remove player from scene
+            //     player.gameObject.SetActive(false);
+
+            //     aiAnim.ResetTrigger("walk");
+            //     aiAnim.ResetTrigger("idle");
+            //     aiAnim.ResetTrigger("sprint");
+
+            //     // hideText.SetActive(false);
+            //     // stopHideText.SetActive(false);
+
+            //     // Change to bite animation
+            //     aiAnim.SetTrigger("jumpscare");
+
+            //     StartCoroutine(deathRoutine());
+            //     chasing = false;
+
+            //     // This end game
+            // }
         }
-        if(walking == true)
+
+        if (walking == true)
         {
-            dest = currentDest.position;
-            ai.destination = dest;
+            dest = currentDest.transform;
+            ai.destination = dest.position;
             ai.speed = walkSpeed;
             aiAnim.ResetTrigger("sprint");
             aiAnim.ResetTrigger("idle");
-            aiAnim.ResetTrigger("search");
             aiAnim.SetTrigger("walk");
             if (ai.remainingDistance <= ai.stoppingDistance)
             {
                 aiAnim.ResetTrigger("sprint");
                 aiAnim.ResetTrigger("walk");
-                aiAnim.ResetTrigger("search");
                 aiAnim.SetTrigger("idle");
                 ai.speed = 0;
                 StopCoroutine("stayIdle");
@@ -116,13 +121,6 @@ public class enemyAI : MonoBehaviour
         walking = true;
         currentDest = destinations[Random.Range(0, destinations.Count)];
     }
-    IEnumerator searchRoutine()
-    {
-        yield return new WaitForSeconds(Random.Range(minSearchTime, maxSearchTime));
-        searching = false;
-        walking = true;
-        currentDest = destinations[Random.Range(0, destinations.Count)];
-    }
     IEnumerator chaseRoutine()
     {
         yield return new WaitForSeconds(Random.Range(minChaseTime, maxChaseTime));
@@ -131,6 +129,9 @@ public class enemyAI : MonoBehaviour
     IEnumerator deathRoutine()
     {
         yield return new WaitForSeconds(jumpscareTime);
-        SceneManager.LoadScene(deathScene);
+
+        // Tells GameManager that player is dead
+
+        // SceneManager.LoadScene(deathScene);
     }
 }
