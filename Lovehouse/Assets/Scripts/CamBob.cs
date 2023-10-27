@@ -15,7 +15,7 @@ public class CamBob : MonoBehaviour
             anim.ResetTrigger("idle");
             anim.ResetTrigger("sprint");
             anim.SetTrigger("walk");
-            if (Input.GetButton("Sprint"))
+            if (walk && Input.GetButton("Sprint"))
             {
                 anim.ResetTrigger("idle");
                 anim.ResetTrigger("walk");
