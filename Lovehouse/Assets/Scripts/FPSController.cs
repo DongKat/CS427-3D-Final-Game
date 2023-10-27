@@ -13,9 +13,11 @@ public class SC_FPSController : MonoBehaviour
     public Camera playerCamera;
     public float lookSpeed = 2.0f;
     public float lookXLimit = 45.0f;
-    public bool isRunning = false;
 
+    public bool isRunning = false;
     public bool isCrouching = false;
+    public bool isJumping = false;
+
     public float crouchHeight = 0.5f;
     public float crouchSpeed = 2.0f;
     public float crouchTransitionSpeed = 10f;
@@ -25,7 +27,7 @@ public class SC_FPSController : MonoBehaviour
     private Vector3 cameraCrouchPosition;
 
     AudioSource audio;
-    public AudioClip walk, sprint;
+    public AudioClip walk, sprint; //, jump, jump_landed;
     CharacterController characterController;
     Vector3 moveDirection = Vector3.zero;
     float rotationX = 0;
@@ -55,19 +57,24 @@ public class SC_FPSController : MonoBehaviour
         // Press Left Shift to run
         
         if (!isCrouching) isRunning= Input.GetButton("Sprint");
+        isJumping = Input.GetButton("Jump");
+
         float curSpeedX = canMove ? (isRunning ? runningSpeed : walkingSpeed) * Input.GetAxis("Vertical") : 0;
         float curSpeedY = canMove ? (isRunning ? runningSpeed : walkingSpeed) * Input.GetAxis("Horizontal") : 0;
         float movementDirectionY = moveDirection.y;
         moveDirection = (forward * curSpeedX) + (right * curSpeedY);
-        if (Input.GetButton("Horizontal") | Input.GetButton("Vertical"))
+
+        if ((Input.GetButton("Horizontal") | Input.GetButton("Vertical")) && characterController.isGrounded)
         {
             if (isRunning)
             {
                 audio.clip = sprint;
+                audio.loop = true;
             }
             else 
             {
                 audio.clip = walk;
+                audio.loop = true;
             }
             audio.enabled = true;
         }
@@ -75,8 +82,12 @@ public class SC_FPSController : MonoBehaviour
         {
             audio.enabled = false;
         }
-        if (Input.GetButton("Jump") && canMove && characterController.isGrounded)
+
+        if (isJumping && canMove && characterController.isGrounded)
         {
+            //audio.clip = jump;
+            //audio.loop = false;
+            //audio.enabled = true;
             moveDirection.y = jumpSpeed;
         }
         else
@@ -91,6 +102,14 @@ public class SC_FPSController : MonoBehaviour
         {
             moveDirection.y -= gravity * Time.deltaTime;
         }
+
+        //if(isJumping && characterController.isGrounded)
+        //{
+        //    audio.clip = jump_landed;
+        //    audio.loop = false;
+        //    audio.enabled = true;
+        //    isJumping = false;
+        //}
 
         // Move the controller
         characterController.Move(moveDirection * Time.deltaTime);
