@@ -25,7 +25,6 @@ public class Lightswitch : MonoBehaviour
         }
 
         void Update(){
-            Debug.Log(toggle);
             if(interactable == true){
                 if(Input.GetKeyDown(KeyCode.E)){
                     toggle = !toggle;

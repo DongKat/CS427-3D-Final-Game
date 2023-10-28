@@ -29,7 +29,8 @@ public class AN_DoorScript : MonoBehaviour
     float distance;
     float angleView;
     Vector3 direction;
-    public GameObject Text;
+    Animator anim;
+
     // Hinge
     [HideInInspector]
     public Rigidbody rbDoor;
@@ -46,14 +47,6 @@ public class AN_DoorScript : MonoBehaviour
 
     void Update()
     {
-        if (NearView())
-        {
-            Text.SetActive(true);
-        }
-        else
-        {
-            Text.SetActive(false);
-        }
         if ( !Remote && Input.GetKeyDown(KeyCode.E) && NearView() )
             Action();
         
@@ -83,7 +76,7 @@ public class AN_DoorScript : MonoBehaviour
             else if (!isOpened && CanOpen && !RedLocked && !BlueLocked)
             {
                 isOpened = true;
-                rbDoor.AddRelativeTorque(new Vector3(0, 0, 20f)); 
+                // rbDoor.AddRelativeTorque(new Vector3(0, 0, 20f));
             }
         
         }
@@ -94,7 +87,7 @@ public class AN_DoorScript : MonoBehaviour
         distance = Vector3.Distance(transform.position, Camera.main.transform.position);
         direction = transform.position - Camera.main.transform.position;
         angleView = Vector3.Angle(Camera.main.transform.forward, direction);
-        if (distance < 4f) return true; // angleView < 35f && 
+        if (distance < 3f) return true; // angleView < 35f && 
         else return false;
     }
 
@@ -107,8 +100,8 @@ public class AN_DoorScript : MonoBehaviour
         else
         {
             // currentLim = hinge.angle; // door will closed from current opened angle
-            if (currentLim > 1f)
-                currentLim -= .5f * OpenSpeed;
+            // if (currentLim > 1f)
+            //     currentLim -= .5f * OpenSpeed;
         }
 
         // using values to door object

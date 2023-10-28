@@ -11,14 +11,15 @@ public class AN_PlugScript : MonoBehaviour
     [Tooltip("SocketObject with collider(shpere, box etc.) (is trigger = true)")]
     public Collider Socket; // need Trigger
     public AN_DoorScript DoorObject;
-    public bool isNear;
-    public GameObject Text;
+
     // NearView()
     float distance;
     float angleView;
     Vector3 direction;
 
-    bool follow = false, isConnected = false, followFlag = false, youCan = true;
+    public GameObject inttext;
+
+    bool follow = false, isConnected = false, followFlag = false, youCan = true, interactable = false;
     Rigidbody rb;
 
     void Start()
@@ -41,19 +42,14 @@ public class AN_PlugScript : MonoBehaviour
         {
             DoorObject.isOpened = false;
         }
+
+        if (HeroHandsPosition == null) Debug.LogError("HeroHandsPosition is null. Please, set it in inspector.");
+
     }
 
     void Interaction()
     {
-        if (NearView())
-        {
-            Text.SetActive(true);
-        }
-        else
-        {
-            Text.SetActive(false);
-        }
-        if (NearView() && Input.GetKeyDown(KeyCode.R) && !follow)
+        if (NearView() && Input.GetKeyDown(KeyCode.E) && !follow)
         {
             isConnected = false; // unfrozen
             follow = true;
@@ -67,16 +63,17 @@ public class AN_PlugScript : MonoBehaviour
             if (followFlag)
             {
                 distance = Vector3.Distance(transform.position, Camera.main.transform.position);
-                if (distance > 3f || Input.GetKeyDown(KeyCode.R))
+                if (distance > 3f || Input.GetKeyDown(KeyCode.E))
                 {
                     follow = false;
                 }
             }
 
             followFlag = true;
-            rb.AddExplosionForce(-1000f, HeroHandsPosition.position, 10f);
+
+            // rb.AddExplosionForce(-1000f, HeroHandsPosition.position, 10f);
             // second variant of following
-            //gameObject.transform.position = Vector3.Lerp(gameObject.transform.position, objectLerp.position, 1f);
+            StartCoroutine(MoveToPosition(HeroHandsPosition.position, 0.1f));
         }
         else
         {
@@ -85,23 +82,54 @@ public class AN_PlugScript : MonoBehaviour
         }
     }
 
+    IEnumerator MoveToPosition(Vector3 targetPosition, float duration)
+    {
+        float time = 0;
+        Vector3 startPosition = transform.position;
+
+        while (time < duration)
+        {
+            transform.position = Vector3.Lerp(startPosition, targetPosition, time / duration);
+            time += Time.deltaTime;
+            yield return null;
+        }
+
+        transform.position = targetPosition;
+    }
+
     bool NearView() // it is true if you near interactive object
     {
-
         distance = Vector3.Distance(transform.position, Camera.main.transform.position);
         direction = transform.position - Camera.main.transform.position;
         angleView = Vector3.Angle(Camera.main.transform.forward, direction);
-        if (distance < 5f && angleView <60f) return true;
+        if (distance < 3f && angleView < 35f) return true;
         else return false;
+    }
+
+    void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("MainCamera"))
+        {
+            inttext.SetActive(false);
+            interactable = false;
+        }
     }
 
     private void OnTriggerEnter(Collider other)
     {
+
+        if (other.CompareTag("MainCamera"))
+        {
+            inttext.SetActive(true);
+            interactable = true;
+        }
+
         if (other == Socket)
         {
             isConnected = true;
             follow = false;
-            DoorObject.rbDoor.AddRelativeTorque(new Vector3(0, 0, 20f));
+            DoorObject.rbDoor.AddRelativeTorque(new Vector3(0, 0, -200f));
+            AudioManager.PlayEnemyRoar();
         }
         if (OneTime) youCan = false;
     }

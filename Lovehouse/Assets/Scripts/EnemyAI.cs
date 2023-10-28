@@ -10,7 +10,7 @@ public class enemyAI : MonoBehaviour
     public List<Transform> destinations;
     public Animator aiAnim;
     public float walkSpeed, chaseSpeed, minIdleTime, maxIdleTime, idleTime, detectionDistance, catchDistance, minChaseTime, maxChaseTime, minSearchTime, maxSearchTime, jumpscareTime;
-    public bool walking, chasing;
+    public bool walking, chasing, finalchase;
     public Transform player;
     public Transform currentDest;
     public Transform dest;
@@ -19,8 +19,6 @@ public class enemyAI : MonoBehaviour
     public float aiDistance;
     public GameObject deathCamera;
 
-    public AudioClip roarAudio, walkAudio, runAudio, biteAudio, idleAudio;
-
     void Start()
     {
         walking = true;
@@ -28,6 +26,24 @@ public class enemyAI : MonoBehaviour
     }
     void Update()
     {
+        // Final Chase after player plug in
+        if (finalchase == true)
+        {
+            dest = player.transform;
+            ai.destination = dest.position;
+
+            // To full speed
+            ai.speed = chaseSpeed;
+
+            // Reset all triggers
+            aiAnim.ResetTrigger("walk");
+            aiAnim.ResetTrigger("idle");
+
+            aiAnim.SetTrigger("sprint");
+            // To block any other actions
+            return;
+        }
+
         aiDistance = Vector3.Distance(player.position, transform.position);
         Vector3 forwardDirection = (player.transform.position - transform.position).normalized;
         // Check for obstacles within the vision range.
@@ -49,11 +65,9 @@ public class enemyAI : MonoBehaviour
                 StopCoroutine("stayIdle");
                 StopCoroutine("chaseRoutine");
                 StartCoroutine("chaseRoutine");
+
             }
         }
-
-        
-
 
         if (chasing == true)
         {
@@ -69,6 +83,9 @@ public class enemyAI : MonoBehaviour
 
             aiAnim.SetTrigger("sprint");
 
+
+            AudioManager.PlayEnemyRun();
+
             // If player get out of catch distance, stop chasing
             // Else if player is in catch distance, kill player
             if (aiDistance <= catchDistance)
@@ -83,12 +100,9 @@ public class enemyAI : MonoBehaviour
                 aiAnim.ResetTrigger("sprint");
                 aiAnim.SetTrigger("kill");
             
-                // Change to bite animation
 
                 StartCoroutine(deathRoutine());
                 chasing = false;
-
-                // This end game
             }
         }
 
@@ -100,6 +114,9 @@ public class enemyAI : MonoBehaviour
             aiAnim.ResetTrigger("sprint");
             aiAnim.ResetTrigger("idle");
             aiAnim.SetTrigger("walk");
+
+            AudioManager.PlayEnemyWalk();
+            
             if (ai.remainingDistance <= ai.stoppingDistance)
             {
                 aiAnim.ResetTrigger("sprint");
@@ -109,10 +126,10 @@ public class enemyAI : MonoBehaviour
                 StopCoroutine("stayIdle");
                 StartCoroutine("stayIdle");
                 walking = false;
+
+                AudioManager.PlayEnemyIdle();
             }
         }
-
-        
     }
     public void stopChase()
     {
@@ -135,23 +152,28 @@ public class enemyAI : MonoBehaviour
     }
     IEnumerator deathRoutine()
     {
+        yield return new WaitForSeconds(1);
+        // Timing for bite animation
+        AudioManager.PlayEnemyBite();
+
+        // disable running agent
+        ai.isStopped = true;
         
-
-        // disable running
-        ai.enabled = false;
-
-
-
-        // // Play bite audio
-        // biteAudio.Play();
-        // yield return new WaitForSeconds(3);
-        // // Play roar audio
-        // roarAudio.Play();
+        // Waiting for bite animation to finish
+        yield return new WaitForSeconds(4);
+        
+        // Play roar audio
+        AudioManager.PlayEnemyRoar();
+        
+        // Waiting for roar audio to finish
         yield return new WaitForSeconds(5);
-        // // Play slash audio
-        // slashAudio.Play();
-        // // Let player die and press restart
-        // // Tell game manager player died
+
+        AudioManager.PlayEnemyIdle();
+
+        yield return new WaitForSeconds(10);
+
+        // // Load death scene
+        // SceneManager.LoadScene(deathScene);
 
     }
 }
