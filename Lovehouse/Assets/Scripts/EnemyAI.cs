@@ -17,7 +17,9 @@ public class enemyAI : MonoBehaviour
     public Transform rayCastOffset;
     public string deathScene;
     public float aiDistance;
-    public GameObject hideText, stopHideText;
+    public GameObject deathCamera;
+
+    public AudioClip roarAudio, walkAudio, runAudio, biteAudio, idleAudio;
 
     void Start()
     {
@@ -26,17 +28,20 @@ public class enemyAI : MonoBehaviour
     }
     void Update()
     {
-        Vector3 forwardDirection = transform.forward;
-
+        aiDistance = Vector3.Distance(player.position, transform.position);
+        Vector3 forwardDirection = (player.transform.position - transform.position).normalized;
         // Check for obstacles within the vision range.
+
+        // To ensure that the raycast at the body of Player
+        Vector3 rayCastoffset = new Vector3(0, -1f, 0);
+
         RaycastHit hit;
-        Debug.DrawRay(rayCastOffset.position, forwardDirection * detectionDistance, Color.green);
-        if (Physics.Raycast(rayCastOffset.position, forwardDirection, out hit, detectionDistance))
+        Debug.DrawRay(rayCastOffset.position + rayCastoffset, forwardDirection * detectionDistance, Color.green);
+        if (Physics.Raycast(rayCastOffset.position + rayCastoffset, forwardDirection, out hit, detectionDistance))
         {
             // Check if the hit object is within the field of view angle.
             if (hit.collider.gameObject.tag == "Player")
             {
-                Debug.Log("Hit object: " + hit.collider.gameObject.name);
                 walking = false;
                 chasing = true;
 
@@ -45,8 +50,9 @@ public class enemyAI : MonoBehaviour
                 StopCoroutine("chaseRoutine");
                 StartCoroutine("chaseRoutine");
             }
-
         }
+
+        
 
 
         if (chasing == true)
@@ -65,26 +71,25 @@ public class enemyAI : MonoBehaviour
 
             // If player get out of catch distance, stop chasing
             // Else if player is in catch distance, kill player
-            // if (aiDistance <= catchDistance)
-            // {
-            //     // Remove player from scene
-            //     player.gameObject.SetActive(false);
+            if (aiDistance <= catchDistance)
+            {
+                Debug.Log("Player is caught!");
+                // Remove player from scene and switch to death camera
+                player.gameObject.SetActive(false);
+                deathCamera.SetActive(true);
 
-            //     aiAnim.ResetTrigger("walk");
-            //     aiAnim.ResetTrigger("idle");
-            //     aiAnim.ResetTrigger("sprint");
+                aiAnim.ResetTrigger("walk");
+                aiAnim.ResetTrigger("idle");
+                aiAnim.ResetTrigger("sprint");
+                aiAnim.SetTrigger("kill");
+            
+                // Change to bite animation
 
-            //     // hideText.SetActive(false);
-            //     // stopHideText.SetActive(false);
+                StartCoroutine(deathRoutine());
+                chasing = false;
 
-            //     // Change to bite animation
-            //     aiAnim.SetTrigger("jumpscare");
-
-            //     StartCoroutine(deathRoutine());
-            //     chasing = false;
-
-            //     // This end game
-            // }
+                // This end game
+            }
         }
 
         if (walking == true)
@@ -106,6 +111,8 @@ public class enemyAI : MonoBehaviour
                 walking = false;
             }
         }
+
+        
     }
     public void stopChase()
     {
@@ -128,10 +135,23 @@ public class enemyAI : MonoBehaviour
     }
     IEnumerator deathRoutine()
     {
-        yield return new WaitForSeconds(jumpscareTime);
+        
 
-        // Tells GameManager that player is dead
+        // disable running
+        ai.enabled = false;
 
-        // SceneManager.LoadScene(deathScene);
+
+
+        // // Play bite audio
+        // biteAudio.Play();
+        // yield return new WaitForSeconds(3);
+        // // Play roar audio
+        // roarAudio.Play();
+        yield return new WaitForSeconds(5);
+        // // Play slash audio
+        // slashAudio.Play();
+        // // Let player die and press restart
+        // // Tell game manager player died
+
     }
 }

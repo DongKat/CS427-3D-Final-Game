@@ -13,9 +13,11 @@ public class SC_FPSController : MonoBehaviour
     public Camera playerCamera;
     public float lookSpeed = 2.0f;
     public float lookXLimit = 45.0f;
-    public bool isRunning = false;
 
+    public bool isRunning = false;
     public bool isCrouching = false;
+    public bool isJumping = false;
+
     public float crouchHeight = 0.5f;
     public float crouchSpeed = 2.0f;
     public float crouchTransitionSpeed = 10f;
@@ -24,6 +26,8 @@ public class SC_FPSController : MonoBehaviour
     private Vector3 cameraStandPosition;
     private Vector3 cameraCrouchPosition;
 
+    AudioSource audio;
+    public AudioClip walk, sprint, jump, jump_landed;
     CharacterController characterController;
     Vector3 moveDirection = Vector3.zero;
     float rotationX = 0;
@@ -33,9 +37,10 @@ public class SC_FPSController : MonoBehaviour
 
     void Start()
     {
+        audio = GetComponent<AudioSource>();
         characterController = GetComponent<CharacterController>();
         originalHeight = characterController.height;
-
+        audio.enabled = true;
         cameraStandPosition = playerCamera.transform.localPosition;
         cameraCrouchPosition = cameraStandPosition + new Vector3(0, crouchCameraOffset, 0);
 
@@ -50,15 +55,46 @@ public class SC_FPSController : MonoBehaviour
         Vector3 forward = transform.TransformDirection(Vector3.forward);
         Vector3 right = transform.TransformDirection(Vector3.right);
         // Press Left Shift to run
-        
-        if (!isCrouching) isRunning= Input.GetButton("Sprint");
+
+        if (!isCrouching) isRunning = Input.GetButton("Sprint");
+        //isJumping = Input.GetButton("Jump");
+
         float curSpeedX = canMove ? (isRunning ? runningSpeed : walkingSpeed) * Input.GetAxis("Vertical") : 0;
         float curSpeedY = canMove ? (isRunning ? runningSpeed : walkingSpeed) * Input.GetAxis("Horizontal") : 0;
         float movementDirectionY = moveDirection.y;
         moveDirection = (forward * curSpeedX) + (right * curSpeedY);
 
+        if ((Input.GetButton("Horizontal") | Input.GetButton("Vertical")) && characterController.isGrounded)
+        {
+            if (audio.clip != jump_landed | !audio.isPlaying)
+            {
+                //audio.enabled = true;
+                if (isRunning)
+                {
+                    audio.clip = sprint;
+                    audio.loop = true;
+                    if (!audio.isPlaying) audio.Play();
+                }
+                else
+                {
+                    audio.clip = walk;
+                    audio.loop = true;
+                    if (!audio.isPlaying) audio.Play();
+                }
+            }
+        }
+        else if ((audio.clip != jump && audio.clip != jump_landed) | !audio.isPlaying)
+        {
+            //audio.enabled = false;
+            audio.Stop();
+        }
+
         if (Input.GetButton("Jump") && canMove && characterController.isGrounded)
         {
+            audio.clip = jump;
+            audio.loop = false;
+            //audio.enabled = true;
+            audio.Play();
             moveDirection.y = jumpSpeed;
         }
         else
@@ -71,7 +107,19 @@ public class SC_FPSController : MonoBehaviour
         // as an acceleration (ms^-2)
         if (!characterController.isGrounded)
         {
+            isJumping = true;
             moveDirection.y -= gravity * Time.deltaTime;
+        }
+        else 
+        {
+            if (isJumping)
+            {
+                isJumping = false;
+                audio.clip = jump_landed;
+                audio.loop = false;
+                //audio.enabled = true;
+                audio.Play();
+            }
         }
 
         // Move the controller
