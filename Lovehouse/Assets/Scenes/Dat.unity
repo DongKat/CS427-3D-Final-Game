@@ -6339,10 +6339,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 4553338533224071079, guid: c688dc2930154264dbb5c76950ba0497, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 6769663378101892751, guid: c688dc2930154264dbb5c76950ba0497, type: 3}
       propertyPath: m_LocalPosition.x
       value: 6.063
@@ -6390,10 +6386,6 @@ PrefabInstance:
     - target: {fileID: 8112260321397144084, guid: c688dc2930154264dbb5c76950ba0497, type: 3}
       propertyPath: m_Name
       value: Light System
-      objectReference: {fileID: 0}
-    - target: {fileID: 8738667152307836811, guid: c688dc2930154264dbb5c76950ba0497, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
