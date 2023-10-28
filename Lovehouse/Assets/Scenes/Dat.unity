@@ -2155,13 +2155,14 @@ MonoBehaviour:
   lookXLimit: 45
   isRunning: 0
   isCrouching: 0
+  isJumping: 0
   crouchHeight: 0.5
   crouchSpeed: 2
   crouchTransitionSpeed: 10
   crouchCameraOffset: -0.5
   walk: {fileID: 8300000, guid: 76c66b3ae15685a45a334b0628d1edd1, type: 3}
   sprint: {fileID: 8300000, guid: 2802b1a72217c464ea0171ad67e835f7, type: 3}
-  jump: {fileID: 8300000, guid: 7d22997c3222c124d91d351ddc1c6ee4, type: 3}
+  jump: {fileID: 8300000, guid: 192fae948b1e75e4e8bf3b7cb9181a0f, type: 3}
   jump_landed: {fileID: 8300000, guid: bb5ec83ccc5c69f43b31f100278bff91, type: 3}
   canMove: 1
 --- !u!143 &803384436
