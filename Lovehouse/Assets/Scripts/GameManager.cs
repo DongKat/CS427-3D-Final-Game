@@ -5,8 +5,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
 
-    public int playerScore = 0;
-    public int playerLives = 3;
+    public bool isPlayerDead = false;
 
     // Other game-related variables and functions...
 
@@ -25,6 +24,12 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         // Initialize game state, UI, and other systems.
+    }
+
+    static public void PlayerDied()
+    {
+        instance.isPlayerDead = true;
+        // Prompt game over UI.
     }
 
     // Other functions to manage game state, handle input, etc.
