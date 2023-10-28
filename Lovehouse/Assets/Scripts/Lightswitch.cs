@@ -11,14 +11,14 @@ public class Lightswitch : MonoBehaviour
         public Animator switchAnim;
 
         void OnTriggerStay(Collider other){
-            if (other.CompareTag ("MainCanera")){
+            if (other.CompareTag("MainCamera")){
                 inttext.SetActive(true);
                 interactable = true;
             }
         }
 
-        void OntriggerExit(Collider other){
-            if (other.CompareTag ("MainCanera")){
+        void OnTriggerExit(Collider other){
+            if (other.CompareTag("MainCamera")){
                 inttext.SetActive(false);
                 interactable = false;
             }

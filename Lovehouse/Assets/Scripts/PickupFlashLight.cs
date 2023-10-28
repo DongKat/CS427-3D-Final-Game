@@ -31,7 +31,7 @@ public class PickupFlashLight : MonoBehaviour
             {
                 fl_intText.SetActive(false);
                 fl_interactable = false;
-                // fl_pickup.Play();
+                fl_pickup.Play();
                 fl_hand.SetActive(true);
                 fl_table.SetActive(false);
             }
