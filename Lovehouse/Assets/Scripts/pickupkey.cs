@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class pickupkey : MonoBehaviour
 {
-    public GameObject inttext, key;
+    public GameObject inttext, key, announce;
     public AudioSource pickup;
     public bool interactable;
     void OnTriggerEnter(Collider other)
@@ -32,9 +32,17 @@ public class pickupkey : MonoBehaviour
             {
                 inttext.SetActive(false);
                 interactable = false;
-                //pickup.Play();
-                key.SetActive(false);
+                pickup.Play();
+                GetComponent<MeshRenderer>().enabled = false;
+                StartCoroutine(MakeTextActive());
             }
         }
+    }
+    IEnumerator MakeTextActive()
+    {
+        announce.SetActive(true);
+        yield return new WaitForSeconds(2);
+        announce.SetActive(false);
+        key.SetActive(false);
     }
 }
