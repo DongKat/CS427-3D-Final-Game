@@ -68,19 +68,17 @@ public class SC_FPSController : MonoBehaviour
         {
             if (isRunning)
             {
-                audio.clip = sprint;
-                audio.loop = true;
+                // audio.clip = sprint;
             }
             else 
             {
-                audio.clip = walk;
-                audio.loop = true;
+                // audio.clip = walk;
             }
-            audio.enabled = true;
+            // audio.enabled = true;
         }
         else
         {
-            audio.enabled = false;
+            // audio.enabled = false;
         }
 
         if (isJumping && canMove && characterController.isGrounded)
