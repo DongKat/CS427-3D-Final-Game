@@ -5,7 +5,7 @@ using UnityEngine;
 public class Lightswitch : MonoBehaviour
 {
         public GameObject inttext, light;
-        public bool toggle = true, interactable;
+        public bool toggle = false, interactable;
         public Renderer lightBulb;
         public Material offlight, onlight; public AudioSource lightswitchSound;
         public Animator switchAnim;
@@ -25,11 +25,13 @@ public class Lightswitch : MonoBehaviour
         }
 
         void Update(){
+            Debug.Log(toggle);
             if(interactable == true){
                 if(Input.GetKeyDown(KeyCode.E)){
                     toggle = !toggle;
                     switchAnim.ResetTrigger("press"); 
                     switchAnim.SetTrigger( "press");
+                    lightswitchSound.Play();
                 }
             }
             if (toggle == false){
