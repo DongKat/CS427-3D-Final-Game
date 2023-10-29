@@ -2182,6 +2182,15 @@ MonoBehaviour:
   playerCamera: {fileID: 1018700196}
   lookSpeed: 2
   lookXLimit: 45
+  isRunning: 0
+  isCrouching: 0
+  isJumping: 0
+  crouchHeight: 0.5
+  crouchSpeed: 2
+  crouchTransitionSpeed: 10
+  crouchCameraOffset: -0.5
+  walk: {fileID: 0}
+  sprint: {fileID: 0}
   canMove: 1
 --- !u!143 &803384436
 CharacterController:
