@@ -1,15 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
-
-public class DeathScene : MonoBehaviour
+public class EndScene : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()
     {
-        StartCoroutine(Death());
+        StartCoroutine("WaitForEnd");
     }
 
     // Update is called once per frame
@@ -17,10 +15,8 @@ public class DeathScene : MonoBehaviour
     {
         
     }
-
-    IEnumerator Death()
-    {
-        yield return new WaitForSeconds(5);
-        SceneManager.LoadScene("MainMenu");
+    IEnumerator WaitForEnd() {
+        yield return new WaitForSeconds(31);
+        UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
     }
 }

@@ -54,7 +54,7 @@ public class AN_PlugScript : MonoBehaviour
 
     void Interaction()
     {
-        if (NearView() && Input.GetKeyDown(KeyCode.E) && !follow)
+        if (NearView() && Input.GetKeyDown(KeyCode.R) && !follow)
         {
             isConnected = false; // unfrozen
             follow = true;

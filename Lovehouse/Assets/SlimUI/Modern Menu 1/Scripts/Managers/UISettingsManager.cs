@@ -56,7 +56,7 @@ namespace SlimUI.ModernMenu
 		public GameObject mouseSmoothSlider;
 
 		// private float sliderValueMaster = 50.0f;
-		private float sliderValueMusic = 50.0f;
+		private float sliderValueMusic = 1.0f;
 		// private float sliderValueSFX = 50.0f;
 		public float sliderValueXSensitivity = 1.0f;
 		public float sliderValueYSensitivity = 1.0f;
@@ -64,7 +64,7 @@ namespace SlimUI.ModernMenu
 
 
 		public void Start()
-		{
+		{ 
 			// // check difficulty
 			// if(PlayerPrefs.GetInt("NormalDifficulty") == 1){
 			// 	difficultynormaltextLINE.gameObject.SetActive(true);

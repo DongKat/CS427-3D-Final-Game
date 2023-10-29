@@ -17,7 +17,4 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/EndScene.unity
     guid: 3787b893d6da70348930e951fb4b3907
-  - enabled: 1
-    path: Assets/Scenes/SplashScreen.unity
-    guid: a1a4290149ae49d4b8efa2ec5dc95cc1
   m_configObjects: {}
