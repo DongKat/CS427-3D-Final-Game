@@ -87,7 +87,7 @@ public class door : MonoBehaviour
         // close door after pumpkin open for 5 secs
         yield return new WaitForSeconds(1);
         obstacle.carving = true;
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(3);
         doorAnim.ResetTrigger("open");
         doorAnim.SetTrigger("close");
         obstacle.carving = false;
