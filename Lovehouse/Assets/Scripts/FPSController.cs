@@ -31,9 +31,17 @@ public class SC_FPSController : MonoBehaviour
     CharacterController characterController;
     Vector3 moveDirection = Vector3.zero;
     float rotationX = 0;
-
+    
     [HideInInspector]
     public bool canMove = true;
+
+    public float XSensitivity = 1.0f, YSensitivity = 1.0f;
+
+    void Awake()
+    {
+        XSensitivity = PlayerPrefs.GetFloat("XSensitivity");
+        YSensitivity = PlayerPrefs.GetFloat("YSensitivity");
+    }
 
     void Start()
     {
@@ -68,18 +76,20 @@ public class SC_FPSController : MonoBehaviour
         {
             if (audio.clip != jump_landed | !audio.isPlaying)
             {
-                //audio.enabled = true;
+                audio.enabled = true;
                 if (isRunning)
                 {
                     audio.clip = sprint;
                     audio.loop = true;
                     if (!audio.isPlaying) audio.Play();
+                    // AudioManager.PlayRun();
                 }
                 else
                 {
                     audio.clip = walk;
                     audio.loop = true;
                     if (!audio.isPlaying) audio.Play();
+                    // AudioManager.PlayWalk();
                 }
             }
         }
@@ -87,6 +97,7 @@ public class SC_FPSController : MonoBehaviour
         {
             //audio.enabled = false;
             audio.Stop();
+            // AudioManager.stopAudio();
         }
 
         if (Input.GetButton("Jump") && canMove && characterController.isGrounded)
@@ -95,6 +106,7 @@ public class SC_FPSController : MonoBehaviour
             audio.loop = false;
             //audio.enabled = true;
             audio.Play();
+            // AudioManager.PlayJump();
             moveDirection.y = jumpSpeed;
         }
         else
@@ -115,10 +127,11 @@ public class SC_FPSController : MonoBehaviour
             if (isJumping)
             {
                 isJumping = false;
-                audio.clip = jump_landed;
-                audio.loop = false;
-                //audio.enabled = true;
-                audio.Play();
+                AudioManager.PlayLand();
+                // audio.clip = jump_landed;
+                // audio.loop = false;
+                // //audio.enabled = true;
+                // audio.Play();
             }
         }
 
@@ -128,8 +141,9 @@ public class SC_FPSController : MonoBehaviour
         // Player and Camera rotation
         if (canMove)
         {
-            rotationX += -Input.GetAxis("Mouse Y") * lookSpeed;
-            rotationX = Mathf.Clamp(rotationX, -lookXLimit, lookXLimit);
+            rotationX += -Input.GetAxis("Mouse Y") * lookSpeed * XSensitivity;
+            rotationX = Mathf.Clamp(rotationX, -lookXLimit, lookXLimit) * YSensitivity;
+
             playerCamera.transform.localRotation = Quaternion.Euler(rotationX, 0, 0);
             transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * lookSpeed, 0);
         }

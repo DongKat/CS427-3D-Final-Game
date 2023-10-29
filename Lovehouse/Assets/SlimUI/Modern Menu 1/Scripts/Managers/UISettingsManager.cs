@@ -55,12 +55,12 @@ namespace SlimUI.ModernMenu
 		public GameObject sensitivityYSlider;
 		public GameObject mouseSmoothSlider;
 
-		private float sliderValueMaster = 0.0f;
-		private float sliderValueMusic = 0.0f;
-		private float sliderValueSFX = 0.0f;
-		private float sliderValueXSensitivity = 0.0f;
-		private float sliderValueYSensitivity = 0.0f;
-		private float sliderValueSmoothing = 0.0f;
+		// private float sliderValueMaster = 50.0f;
+		private float sliderValueMusic = 50.0f;
+		// private float sliderValueSFX = 50.0f;
+		public float sliderValueXSensitivity = 1.0f;
+		public float sliderValueYSensitivity = 1.0f;
+		// private float sliderValueSmoothing = 1.0f;
 
 
 		public void Start()
@@ -88,11 +88,11 @@ namespace SlimUI.ModernMenu
 			// check full screen
 			if (Screen.fullScreen == true)
 			{
-				fullscreentext.GetComponent<TMP_Text>().text = "on";
+				fullscreentext.GetComponent<TMP_Text>().text = "ON";
 			}
 			else if (Screen.fullScreen == false)
 			{
-				fullscreentext.GetComponent<TMP_Text>().text = "off";
+				fullscreentext.GetComponent<TMP_Text>().text = "OFF";
 			}
 
 			// // check hud value
@@ -167,11 +167,11 @@ namespace SlimUI.ModernMenu
 			// check vsync
 			if (QualitySettings.vSyncCount == 0)
 			{
-				vsynctext.GetComponent<TMP_Text>().text = "off";
+				vsynctext.GetComponent<TMP_Text>().text = "OFF";
 			}
 			else if (QualitySettings.vSyncCount == 1)
 			{
-				vsynctext.GetComponent<TMP_Text>().text = "on";
+				vsynctext.GetComponent<TMP_Text>().text = "ON";
 			}
 
 			// // check mouse inverse
@@ -233,7 +233,7 @@ namespace SlimUI.ModernMenu
 			//sliderValue = musicSlider.GetComponent<Slider>().value;
 			sliderValueXSensitivity = sensitivityXSlider.GetComponent<Slider>().value;
 			sliderValueYSensitivity = sensitivityYSlider.GetComponent<Slider>().value;
-			sliderValueSmoothing = mouseSmoothSlider.GetComponent<Slider>().value;
+			// sliderValueSmoothing = mouseSmoothSlider.GetComponent<Slider>().value;
 		}
 
 		public void FullScreen()
@@ -254,18 +254,21 @@ namespace SlimUI.ModernMenu
 		// {
 		// 	//PlayerPrefs.SetFloat("MusicVolume", sliderValue);
 		// 	PlayerPrefs.SetFloat("MasterVolume", masterSlider.GetComponent<Slider>().value);
+		// 	AudioManager.changeVolume();
 		// }
 
 		public void MusicSlider()
 		{
 			//PlayerPrefs.SetFloat("MusicVolume", sliderValue);
 			PlayerPrefs.SetFloat("MusicVolume", musicSlider.GetComponent<Slider>().value);
+			AudioManager.changeVolume();
 		}
 
 		// public void SfxSlider()
 		// {
 		// 	//PlayerPrefs.SetFloat("MusicVolume", sliderValue);
 		// 	PlayerPrefs.SetFloat("SFXVolume", masterSlider.GetComponent<Slider>().value);
+		// 	AudioManager.changeVolume();
 		// }
 
 		public void SensitivityXSlider()
@@ -278,11 +281,11 @@ namespace SlimUI.ModernMenu
 			PlayerPrefs.SetFloat("YSensitivity", sliderValueYSensitivity);
 		}
 
-		public void SensitivitySmoothing()
-		{
-			PlayerPrefs.SetFloat("MouseSmoothing", sliderValueSmoothing);
-			Debug.Log(PlayerPrefs.GetFloat("MouseSmoothing"));
-		}
+		// public void SensitivitySmoothing()
+		// {
+		// 	PlayerPrefs.SetFloat("MouseSmoothing", sliderValueSmoothing);
+		// 	Debug.Log(PlayerPrefs.GetFloat("MouseSmoothing"));
+		// }
 
 		// // the playerprefs variable that is checked to enable hud while in game
 		// public void ShowHUD (){

@@ -6,7 +6,6 @@ public class FlashLightEnable : MonoBehaviour
 {
     public GameObject fl_light;
     public bool fl_toggle;
-    public AudioSource fl_enable;
     void Start()
     {
         if(fl_toggle == false)
@@ -23,7 +22,7 @@ public class FlashLightEnable : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.F)) 
         {
             fl_toggle = !fl_toggle;
-            // fl_enable.Play();
+            AudioManager.PlayLightSwitch();
             fl_light.SetActive(fl_toggle);
         }   
     }

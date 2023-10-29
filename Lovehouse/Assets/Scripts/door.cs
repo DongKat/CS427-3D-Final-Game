@@ -24,7 +24,7 @@ public class door : MonoBehaviour
         }
         if (other.CompareTag("Pumpkin"))
         {
-            Debug.Log("Door opened");
+            // Debug.Log("Door opened");
             isOpen = true;
             StartCoroutine("closeDoor");
         }
@@ -73,7 +73,6 @@ public class door : MonoBehaviour
         {
             doorAnim.ResetTrigger("close");
             doorAnim.SetTrigger("open");
-
         }
 
     }

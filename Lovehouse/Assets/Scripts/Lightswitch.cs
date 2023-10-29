@@ -7,7 +7,7 @@ public class Lightswitch : MonoBehaviour
         public GameObject inttext, light;
         public bool toggle = false, interactable;
         public Renderer lightBulb;
-        public Material offlight, onlight; public AudioSource lightswitchSound;
+        public Material offlight, onlight; 
         public Animator switchAnim;
 
         void OnTriggerStay(Collider other){
@@ -30,7 +30,7 @@ public class Lightswitch : MonoBehaviour
                     toggle = !toggle;
                     switchAnim.ResetTrigger("press"); 
                     switchAnim.SetTrigger( "press");
-                    lightswitchSound.Play();
+                    AudioManager.PlayLightSwitch();
                 }
             }
             if (toggle == false){

@@ -19,6 +19,8 @@ public class enemyAI : MonoBehaviour
     public float aiDistance;
     public GameObject deathCamera;
 
+    public GameObject holyKey;
+
     void Start()
     {
         walking = true;
@@ -91,8 +93,9 @@ public class enemyAI : MonoBehaviour
             if (aiDistance <= catchDistance)
             {
                 Debug.Log("Player is caught!");
-                // Remove player from scene and switch to death camera
                 player.gameObject.SetActive(false);
+                holyKey.SetActive(false);
+
                 deathCamera.SetActive(true);
 
                 aiAnim.ResetTrigger("walk");
@@ -164,16 +167,15 @@ public class enemyAI : MonoBehaviour
         
         // Play roar audio
         AudioManager.PlayEnemyRoar();
+        aiAnim.SetTrigger("idle");
         
         // Waiting for roar audio to finish
         yield return new WaitForSeconds(5);
 
-        AudioManager.PlayEnemyIdle();
-
-        yield return new WaitForSeconds(10);
+        
 
         // // Load death scene
-        // SceneManager.LoadScene(deathScene);
+        SceneManager.LoadScene(deathScene);
 
     }
 }

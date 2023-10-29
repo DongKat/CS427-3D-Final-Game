@@ -6,7 +6,6 @@ public class PickupFlashLight : MonoBehaviour
 {
     public GameObject fl_intText, fl_table, fl_hand;
     public bool fl_interactable;
-    public AudioSource fl_pickup;
     void OnTriggerStay(Collider other)
     {
         if (other.CompareTag("MainCamera"))
@@ -31,7 +30,9 @@ public class PickupFlashLight : MonoBehaviour
             {
                 fl_intText.SetActive(false);
                 fl_interactable = false;
-                fl_pickup.Play();
+
+                AudioManager.PlayPickup();
+                
                 fl_hand.SetActive(true);
                 fl_table.SetActive(false);
             }
