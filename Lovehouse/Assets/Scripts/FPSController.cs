@@ -76,7 +76,7 @@ public class SC_FPSController : MonoBehaviour
         {
             if (audio.clip != jump_landed | !audio.isPlaying)
             {
-                audio.enabled = true;
+                // audio.enabled = true;
                 if (isRunning)
                 {
                     audio.clip = sprint;

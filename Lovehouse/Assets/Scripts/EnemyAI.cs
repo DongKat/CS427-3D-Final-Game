@@ -21,39 +21,70 @@ public class enemyAI : MonoBehaviour
 
     public GameObject holyKey;
 
+    Vector3 rayCastoffset = new(0, -1f, 0);
+    public bool isFinish = false;
+
     void Start()
     {
         walking = true;
         currentDest = destinations[Random.Range(0, destinations.Count)];
+        aiDistance = Vector3.Distance(player.position, transform.position);
     }
     void Update()
     {
-        // Final Chase after player plug in
-        if (finalchase == true)
-        {
-            dest = player.transform;
-            ai.destination = dest.position;
-
-            // To full speed
-            ai.speed = chaseSpeed;
-
-            // Reset all triggers
-            aiAnim.ResetTrigger("walk");
-            aiAnim.ResetTrigger("idle");
-
-            aiAnim.SetTrigger("sprint");
-            // To block any other actions
-            return;
-        }
-
         aiDistance = Vector3.Distance(player.position, transform.position);
         Vector3 forwardDirection = (player.transform.position - transform.position).normalized;
+
+        
         // Check for obstacles within the vision range.
 
         // To ensure that the raycast at the body of Player
-        Vector3 rayCastoffset = new Vector3(0, -1f, 0);
 
         RaycastHit hit;
+
+
+        if (holyKey.gameObject.GetComponent<AN_PlugScript>().isConnected == true)
+        {
+            finalchase = true;
+            
+            if(finalchase == true && isFinish == false)
+            {
+                Debug.Log("Final chase!");
+                dest = player.transform;
+                ai.destination = dest.position;
+
+                // To full speed
+                ai.speed = chaseSpeed;
+
+                // Reset all triggers
+                aiAnim.ResetTrigger("walk");
+                aiAnim.ResetTrigger("idle");
+
+                aiAnim.SetTrigger("sprint");
+
+                if (aiDistance <= catchDistance)
+                {
+                    Debug.Log("Player is caught!");
+                    player.gameObject.SetActive(false);
+                    holyKey.SetActive(false);
+
+                    deathCamera.SetActive(true);
+
+                    aiAnim.ResetTrigger("walk");
+                    aiAnim.ResetTrigger("idle");
+                    aiAnim.ResetTrigger("sprint");
+                    aiAnim.SetTrigger("kill");
+                
+
+                    StartCoroutine(deathRoutine());
+                    finalchase = false;
+                    isFinish = true;
+                }
+            }
+            return;
+        }
+
+        
         Debug.DrawRay(rayCastOffset.position + rayCastoffset, forwardDirection * detectionDistance, Color.green);
         if (Physics.Raycast(rayCastOffset.position + rayCastoffset, forwardDirection, out hit, detectionDistance))
         {
@@ -69,7 +100,11 @@ public class enemyAI : MonoBehaviour
                 StartCoroutine("chaseRoutine");
 
             }
+            
         }
+
+        // Final Chase after player plug in
+        
 
         if (chasing == true)
         {
@@ -92,7 +127,6 @@ public class enemyAI : MonoBehaviour
             // Else if player is in catch distance, kill player
             if (aiDistance <= catchDistance)
             {
-                Debug.Log("Player is caught!");
                 player.gameObject.SetActive(false);
                 holyKey.SetActive(false);
 
@@ -108,6 +142,8 @@ public class enemyAI : MonoBehaviour
                 chasing = false;
             }
         }
+
+        
 
         if (walking == true)
         {
@@ -163,19 +199,25 @@ public class enemyAI : MonoBehaviour
         ai.isStopped = true;
         
         // Waiting for bite animation to finish
-        yield return new WaitForSeconds(4);
-        
+        yield return new WaitForSeconds(3);
+        Debug.Log("Dooing Roar");
         // Play roar audio
         AudioManager.PlayEnemyRoar();
-        aiAnim.SetTrigger("idle");
         
         // Waiting for roar audio to finish
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(7);
+        aiAnim.SetTrigger("idle");
 
         
 
         // // Load death scene
         SceneManager.LoadScene(deathScene);
 
+    }
+
+    IEnumerator justRoar()
+    {
+        AudioManager.PlayEnemyRoar();
+        yield return new WaitForSeconds(1);
     }
 }

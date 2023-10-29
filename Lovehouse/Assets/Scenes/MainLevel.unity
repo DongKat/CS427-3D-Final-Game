@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 1, g: 1, b: 1, a: 1}
-  m_SkyboxMaterial: {fileID: 0}
+  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1208,7 +1208,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 1bb406279dfcb824ababd02e721710d1, type: 3}
   musicClip:
   - {fileID: 8300000, guid: 8b3c2e75b5d9f294185b63398af215d6, type: 3}
-  - {fileID: 0}
+  - {fileID: 8300000, guid: 10546d9649879d14e8277d84c34d122e, type: 3}
   itemClip:
   - {fileID: 8300000, guid: a7091f7b917d7e943beb06db935303c5, type: 3}
   - {fileID: 8300000, guid: 0e5d7f5eddc26e648b5ac4c10b68c8c5, type: 3}
@@ -8455,7 +8455,7 @@ Transform:
   m_GameObject: {fileID: 803384430}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -9.1, y: 2.06, z: 62.6}
+  m_LocalPosition: {x: 6.6, y: 2.06, z: 26.7}
   m_LocalScale: {x: 1, y: 1.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -20055,6 +20055,7 @@ Transform:
   - {fileID: 1911842739}
   - {fileID: 655349838}
   - {fileID: 228009890}
+  - {fileID: 1861446006}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1689055495 stripped
@@ -22908,6 +22909,72 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1221377694}
   m_SourcePrefab: {fileID: 100100000, guid: df2f14ece3a3a0847aad4f1407b39c50, type: 3}
+--- !u!1 &1861446005
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1861446006}
+  - component: {fileID: 1861446008}
+  - component: {fileID: 1861446007}
+  m_Layer: 0
+  m_Name: EndTrigger
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1861446006
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1861446005}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -75.3, y: -4.8, z: 14.9}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1675858039}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1861446007
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1861446005}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06cef1e845e030a44a0999c81c3dbe5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!65 &1861446008
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1861446005}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 10, y: 10, z: 10}
+  m_Center: {x: 2.739273, y: 3.7417655, z: 0}
 --- !u!1 &1862149726
 GameObject:
   m_ObjectHideFlags: 0
@@ -25211,7 +25278,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6208272458019398872, guid: 3ac4eac9dad0c2f478914438235bb36b, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -15.659
+      value: 2.5
       objectReference: {fileID: 0}
     - target: {fileID: 6208272458019398872, guid: 3ac4eac9dad0c2f478914438235bb36b, type: 3}
       propertyPath: m_LocalPosition.y
@@ -25219,7 +25286,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6208272458019398872, guid: 3ac4eac9dad0c2f478914438235bb36b, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 106.61101
+      value: 19.6
       objectReference: {fileID: 0}
     - target: {fileID: 6208272458019398872, guid: 3ac4eac9dad0c2f478914438235bb36b, type: 3}
       propertyPath: m_LocalRotation.w
@@ -25603,6 +25670,10 @@ PrefabInstance:
       value: DeadScene
       objectReference: {fileID: 0}
     - target: {fileID: 2516135693397232137, guid: 149914faacece2940a120e1783c4c6a9, type: 3}
+      propertyPath: finalchase
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2516135693397232137, guid: 149914faacece2940a120e1783c4c6a9, type: 3}
       propertyPath: detectionDistance
       value: 10
       objectReference: {fileID: 0}
@@ -25633,7 +25704,7 @@ PrefabInstance:
     - target: {fileID: 2516135693397232137, guid: 149914faacece2940a120e1783c4c6a9, type: 3}
       propertyPath: destinations.Array.data[5]
       value: 
-      objectReference: {fileID: 1187281378}
+      objectReference: {fileID: 1781817580}
     - target: {fileID: 3719395497477781888, guid: 149914faacece2940a120e1783c4c6a9, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.029413056
@@ -26592,7 +26663,7 @@ PrefabInstance:
       objectReference: {fileID: 9100000, guid: 1ed9f28ddd6a6304a8e5c9f3027649c5, type: 2}
     - target: {fileID: 6706190838146845492, guid: 149914faacece2940a120e1783c4c6a9, type: 3}
       propertyPath: rolloffMode
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6706190838146845492, guid: 149914faacece2940a120e1783c4c6a9, type: 3}
       propertyPath: OutputAudioMixerGroup
@@ -26600,7 +26671,7 @@ PrefabInstance:
       objectReference: {fileID: -4026036537436959392, guid: 584d552c6160a1a4ba684abf1f263c11, type: 2}
     - target: {fileID: 6706190838146845492, guid: 149914faacece2940a120e1783c4c6a9, type: 3}
       propertyPath: panLevelCustomCurve.m_Curve.Array.data[0].value
-      value: 0.964
+      value: 0.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

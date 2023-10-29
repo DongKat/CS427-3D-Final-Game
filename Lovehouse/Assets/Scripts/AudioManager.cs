@@ -181,6 +181,8 @@ public class AudioManager : MonoBehaviour
     {
         if (instance == null)
             return;
+        if (instance.enemySource.isPlaying && instance.enemySource.clip == instance.enemyClip[3])
+            return;
         Debug.Log("Playing enemy roar");
         instance.enemySource.clip = instance.enemyClip[3];
         instance.enemySource.loop = false;
@@ -191,6 +193,8 @@ public class AudioManager : MonoBehaviour
         if (instance == null)
             return;
         Debug.Log("Playing enemy bite");
+        if (instance.enemySource.isPlaying && instance.enemySource.clip == instance.enemyClip[4])
+            return;
         instance.enemySource.clip = instance.enemyClip[4];
         instance.enemySource.loop = true;
         instance.enemySource.Play();
@@ -209,6 +213,8 @@ public class AudioManager : MonoBehaviour
     public static void PlayMusic2()
     {
         if (instance == null)
+            return;
+        if (instance.musicSource.isPlaying && instance.musicSource.clip == instance.musicClip[1])
             return;
         instance.musicSource.clip = instance.musicClip[1];
         instance.musicSource.loop = true;
@@ -233,5 +239,6 @@ public class AudioManager : MonoBehaviour
         instance.itemSource.loop = false;
         instance.itemSource.Play();
     }
+
 
 }
