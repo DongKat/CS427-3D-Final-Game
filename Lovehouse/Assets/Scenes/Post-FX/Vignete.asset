@@ -34,14 +34,14 @@ MonoBehaviour:
     overrideState: 0
     value: 0
   color:
-    overrideState: 0
+    overrideState: 1
     value: {r: 1, g: 0, b: 0.038330555, a: 1}
   center:
     overrideState: 0
     value: {x: 0.5, y: 0.5}
   intensity:
     overrideState: 1
-    value: 0.224
+    value: 0.5
   smoothness:
     overrideState: 0
     value: 0.2
