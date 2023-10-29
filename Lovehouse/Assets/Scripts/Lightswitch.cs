@@ -5,20 +5,20 @@ using UnityEngine;
 public class Lightswitch : MonoBehaviour
 {
         public GameObject inttext, light;
-        public bool toggle = true, interactable;
+        public bool toggle = false, interactable;
         public Renderer lightBulb;
         public Material offlight, onlight; public AudioSource lightswitchSound;
         public Animator switchAnim;
 
         void OnTriggerStay(Collider other){
-            if (other.CompareTag ("MainCanera")){
+            if (other.CompareTag("MainCamera")){
                 inttext.SetActive(true);
                 interactable = true;
             }
         }
 
-        void OntriggerExit(Collider other){
-            if (other.CompareTag ("MainCanera")){
+        void OnTriggerExit(Collider other){
+            if (other.CompareTag("MainCamera")){
                 inttext.SetActive(false);
                 interactable = false;
             }
@@ -30,6 +30,7 @@ public class Lightswitch : MonoBehaviour
                     toggle = !toggle;
                     switchAnim.ResetTrigger("press"); 
                     switchAnim.SetTrigger( "press");
+                    lightswitchSound.Play();
                 }
             }
             if (toggle == false){
